@@ -1,0 +1,22 @@
+version: '3.5'
+
+services:
+  plex:
+    image: plexinc/pms-docker:latest
+    container_name: plex
+    restart: unless-stopped
+    env_file: ./.env
+    volumes:
+      - /mnt/slab/plex/config:/config
+      - /mnt/slab/plex/transcode:/transcode
+      - /mnt/slab/plex/data:/data
+    ports:
+      - 32400:32400
+    networks:
+      - backend
+
+networks:
+  backend:
+    external: 
+      name: backend
+

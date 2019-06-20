@@ -1,0 +1,17 @@
+version: "3.5"
+
+services:
+  thelounge:
+    image: thelounge/thelounge:alpine
+    container_name: thelounge
+    restart: unless-stopped
+    volumes:
+      - /home/sweepy/thelounge:/var/opt/thelounge
+    networks:
+      - backend
+
+networks:
+  backend:
+    external:
+      name: backend
+
