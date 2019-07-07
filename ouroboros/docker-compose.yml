@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  ouroboros:
+    image: pyouroboros/ouroboros
+    container_name: ouroboros
+    restart: unless-stopped
+    environment:
+      - CLEANUP=true
+      - INTERVAL=300
+      - LOG_LEVEL=info
+      - SELF_UPDATE=true
+      - IGNORE=
+    env_file: .env
+    command: -N $NOTIFICATION_STRING
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
