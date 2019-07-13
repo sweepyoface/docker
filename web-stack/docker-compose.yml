@@ -14,16 +14,17 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/log/nginx:/var/log/nginx
     depends_on:
-      - certbot
+      - letsencrypt
     networks:
       - backend
-  certbot:
-    build: certbot
-    restart: on-failure:3
-    container_name: certbot
-    env_file: ./certbot/.env
+  letsencrypt:
+    image: adferrand/letsencrypt-dns
+    restart: always
+    container_name: letsencrypt
+    env_file: ./letsencrypt/.env
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
+      - ./letsencrypt/domains.conf:/etc/letsencrypt/domains.conf
     networks:
       - backend
 
@@ -31,3 +32,4 @@ networks:
   backend:
     external: 
       name: backend
+
