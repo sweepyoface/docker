@@ -1,4 +1,4 @@
-version: "3.5"
+version: "3.7"
 
 services:
   nginx:
@@ -11,7 +11,7 @@ services:
     volumes:
       - /var/www:/var/www
       - ./nginx:/etc/nginx
-      - /etc/letsencrypt:/etc/letsencrypt
+      - letsencrypt-data:/etc/letsencrypt
       - /var/log/nginx:/var/log/nginx
     depends_on:
       - letsencrypt
@@ -23,10 +23,13 @@ services:
     container_name: letsencrypt
     env_file: ./letsencrypt/.env
     volumes:
-      - /etc/letsencrypt:/etc/letsencrypt
+      - letsencrypt-data:/etc/letsencrypt
       - ./letsencrypt/domains.conf:/etc/letsencrypt/domains.conf
     networks:
       - backend
+
+volumes:
+  letsencrypt-data:
 
 networks:
   backend:
