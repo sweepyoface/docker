@@ -6,7 +6,7 @@ services:
     container_name: thelounge
     restart: unless-stopped
     volumes:
-      - /home/sweepy/thelounge:/var/opt/thelounge
+      - /mnt/slab/thelounge:/var/opt/thelounge
     networks:
       - backend
 
