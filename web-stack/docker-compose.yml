@@ -19,7 +19,7 @@ services:
       - backend
   letsencrypt:
     image: adferrand/letsencrypt-dns
-    restart: always
+    restart: unless-stopped
     container_name: letsencrypt
     env_file: ./letsencrypt/.env
     volumes:
