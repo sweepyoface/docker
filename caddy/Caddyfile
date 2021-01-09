@@ -1,0 +1,37 @@
+{
+	email sweepy@sweepy.dev
+
+	servers {
+		protocol {
+			experimental_http3
+		}
+	}
+}
+
+(tls) {
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	}
+}
+
+(errors) {
+	handle_errors {
+		rewrite * /{http.error.status_code}
+		reverse_proxy https://http.cat {
+			header_up Host http.cat
+		}
+	}
+}
+
+sweepy.dev {
+	root sweepy.dev
+	import tls
+	import errors
+	file_server
+}
+
+plex.sweepy.dev {
+	import tls
+	import errors
+	reverse_proxy plex:32400
+}

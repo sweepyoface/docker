@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  caddy:
+    image: docker.pkg.github.com/sweepyoface/docker/caddy:latest
+    restart: unless-stopped
+    container_name: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/www:/data
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy:/root/.local/share/caddy
+    env_file: ./.env
+    networks:
+      - backend
+
+volumes:
+  caddy:
+
+networks:
+  backend:
+    external: 
+      name: backend
+
