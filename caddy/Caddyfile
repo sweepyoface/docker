@@ -1,8 +1,6 @@
 {
 	email sweepy@sweepy.dev
 
-	order s3proxy last
-
 	servers {
 		protocol {
 			experimental_http3
@@ -19,9 +17,7 @@
 (headers) {
 	header {
 		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-		## Content-Security-Policy "default-src 'self' https://*.{host} 'unsafe-inline'"
 		Referrer-Policy "strict-origin-when-cross-origin"
-		## Permissions-Policy "geolocation=(), camera=(), fullscreen=*"
 		X-Frame-Options "SAMEORIGIN"
 		X-Content-Type-Options "nosniff"
 		Expect-CT "max-age=0, report-uri=\"https://sweepy.report-uri.com/r/d/ct/reportOnly\""
@@ -53,40 +49,7 @@ u.sweepy.dev toad.land lime.fan {
 	import headers
 	import errors
 
-	# domain specific index and favicon
-	rewrite / /meta/index/{host}
-	rewrite /favicon.ico /meta/favicon/{host}
-
-	# enable put and delete options if a valid api key is provided
-	@authed {
-		# the header directive doesn't replace placeholders apparently
-		expression {header.x-api-key} == {env.IMAGES_API_KEY}
-	}
-	handle @authed {
-		s3proxy {
-			bucket u.sweepy.dev
-			region us-central1
-			endpoint https://storage.googleapis.com
-			enable_put
-			enable_delete
-		}
-	}
-
-	handle {
-		s3proxy {
-			bucket u.sweepy.dev
-			region us-central1
-			endpoint https://storage.googleapis.com
-		}
-	}
-
-	header ?Cache-Control "public, max-age=31536000"
-
-	# favicon attribution
-	@lime.fan {
-		host lime.fan
-	}
-	header @lime.fan X-Icon-Attribution "Icon made by Freepik from www.flaticon.com"
+	reverse_proxy conspire:8080
 }
 
 plex.sweepy.dev {

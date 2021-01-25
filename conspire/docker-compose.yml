@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  conspire:
+    container_name: conspire
+    build: .
+    env_file: ./.env
+    volumes:
+      - ./users.json:/app/users.json
+    networks:
+      - backend
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    #deploy:
+    #  resources:
+    #    limits:
+    #      memory: 256M
+
+networks:
+  backend:
+    external: 
+      name: backend
